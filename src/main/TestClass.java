@@ -1,6 +1,6 @@
-package java.main;
+package main;
 
-import java.annotations.*;
+import annotations.*;
 
 @TestCase
 public class TestClass {
