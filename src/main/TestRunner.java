@@ -21,8 +21,6 @@ public class TestRunner {
             this.instance = this.clazz.getDeclaredConstructor().newInstance();
         }
 
-        String result = "";
-
         List<Method> methodList = List.of(clazz.getMethods());
         List<Method> testMethodList =
                 methodList.stream().filter(m -> m.getAnnotation(Test.class) != null).collect(Collectors.toList());
@@ -35,24 +33,28 @@ public class TestRunner {
         List<Method> afterTestMethodList =
                 methodList.stream().filter(m -> m.getAnnotation(After.class) != null).collect(Collectors.toList());
 
-        for (Method method : beforeAllMethodList) {
-            result += (String) method.invoke(instance);
-        }
-        for (Method method : testMethodList) {
-            if (method.getAnnotation(Skip.class) == null) {
-                for (Method before : beforeTestMethodList) {
-                    result += (String) before.invoke(instance);
-                }
-                result += (String) method.invoke(instance);
-                for (Method after : afterTestMethodList) {
-                    result += (String) after.invoke(instance);
-                }
+        runFunctions(beforeAllMethodList);
+        for (Method testMethod : testMethodList) {
+            if (testMethod.getAnnotation(Skip.class) == null) {
+                runFunctions(beforeTestMethodList);
+                runMethod(testMethod);
+                runFunctions(afterTestMethodList);
             }
         }
-        for (Method method : afterAllMethodList) {
-            result += (String) method.invoke(instance);
-        }
+        runFunctions(afterAllMethodList);
+    }
 
-        System.out.println(result);
+    private void runFunctions(List<Method> functionList) {
+        for (Method method : functionList) {
+            runMethod(method);
+        }
+    }
+
+    private void runMethod(Method method) {
+        try {
+            System.out.println(method.invoke(instance));
+        } catch (InvocationTargetException | IllegalAccessException ex) {
+            System.err.println("Hiba a metódus hívása során.");
+        }
     }
 }
