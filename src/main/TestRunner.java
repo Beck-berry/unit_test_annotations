@@ -16,9 +16,14 @@ public class TestRunner {
         this.clazz = clazz;
     }
 
-    public void process() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void process() {
         if (instance == null) {
-            this.instance = this.clazz.getDeclaredConstructor().newInstance();
+            try {
+                this.instance = this.clazz.getDeclaredConstructor().newInstance();
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                    IllegalAccessException ex) {
+                System.err.println("Nem sikerült az osztály inicializálása.");
+            }
         }
 
         List<Method> methodList = List.of(clazz.getMethods());
