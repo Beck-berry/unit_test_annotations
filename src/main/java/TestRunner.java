@@ -32,7 +32,8 @@ public class TestRunner {
 
         List<Method> methodList = List.of(clazz.getMethods());
         List<Method> testMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(Test.class) != null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(Test.class) != null
+                        && m.getAnnotation(Skip.class) == null).collect(Collectors.toList());
         List<Method> beforeAllMethodList =
                 methodList.stream().filter(m -> m.getAnnotation(BeforeClass.class) != null).collect(Collectors.toList());
         List<Method> afterAllMethodList =
@@ -44,11 +45,9 @@ public class TestRunner {
 
         runFunctions(beforeAllMethodList);
         for (Method testMethod : testMethodList) {
-            if (testMethod.getAnnotation(Skip.class) == null) {
-                runFunctions(beforeTestMethodList);
-                runMethod(testMethod);
-                runFunctions(afterTestMethodList);
-            }
+            runFunctions(beforeTestMethodList);
+            runMethod(testMethod);
+            runFunctions(afterTestMethodList);
         }
         runFunctions(afterAllMethodList);
     }
