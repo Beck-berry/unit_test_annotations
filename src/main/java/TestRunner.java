@@ -1,7 +1,3 @@
-package main.java;
-
-import main.java.annotations.*;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -17,7 +13,7 @@ public class TestRunner {
     }
 
     public void process() {
-        if (clazz.getAnnotation(TestCase.class) == null) {
+        if (clazz.getAnnotation(main.java.annotations.TestCase.class) == null) {
             System.err.println("Nincs @TestCase a kért osztályon");
         }
 
@@ -32,16 +28,16 @@ public class TestRunner {
 
         List<Method> methodList = List.of(clazz.getMethods());
         List<Method> testMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(Test.class) != null
-                        && m.getAnnotation(Skip.class) == null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(main.java.annotations.Test.class) != null
+                        && m.getAnnotation(main.java.annotations.Skip.class) == null).collect(Collectors.toList());
         List<Method> beforeAllMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(BeforeClass.class) != null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(main.java.annotations.BeforeClass.class) != null).collect(Collectors.toList());
         List<Method> afterAllMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(AfterClass.class) != null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(main.java.annotations.AfterClass.class) != null).collect(Collectors.toList());
         List<Method> beforeTestMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(Before.class) != null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(main.java.annotations.Before.class) != null).collect(Collectors.toList());
         List<Method> afterTestMethodList =
-                methodList.stream().filter(m -> m.getAnnotation(After.class) != null).collect(Collectors.toList());
+                methodList.stream().filter(m -> m.getAnnotation(main.java.annotations.After.class) != null).collect(Collectors.toList());
 
         runFunctions(beforeAllMethodList);
         for (Method testMethod : testMethodList) {
