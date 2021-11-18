@@ -1,6 +1,6 @@
-package main;
+package main.java;
 
-import annotations.*;
+import main.java.annotations.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,6 +17,10 @@ public class TestRunner {
     }
 
     public void process() {
+        if (clazz.getAnnotation(TestCase.class) == null) {
+            System.err.println("Nincs @TestCase a kért osztályon");
+        }
+
         if (instance == null) {
             try {
                 this.instance = this.clazz.getDeclaredConstructor().newInstance();

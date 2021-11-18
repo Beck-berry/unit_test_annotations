@@ -1,6 +1,6 @@
-package main;
+package main.java;
 
-import annotations.*;
+import main.java.annotations.*;
 
 @TestCase
 public class TestClass {
@@ -22,21 +22,21 @@ public class TestClass {
 
     @Before
     public String beforeEachTest() {
-        return "Teszt előtt vagyunk, ugye?!";
+        return "---";
     }
 
     @After
     public String afterEachTest() {
-        return "Lefutott a teszt.";
+        return "---";
     }
 
     @BeforeClass
     public String beforeAllTests() {
-        return "Indul a teszt csomag!";
+        return "###### START TEST CASE ######";
     }
 
     @AfterClass
     public String afterAllTests() {
-        return "Végzett az összes teszt.";
+        return "###### TEST CASE END ######";
     }
 }
